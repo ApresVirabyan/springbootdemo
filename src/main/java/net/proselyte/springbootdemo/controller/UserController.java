@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users/")
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
@@ -30,7 +30,7 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping("user/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
         User user = userService.findById(id);
         if (user != null) {
@@ -40,7 +40,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("create")
+    @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User createdUser = userService.saveUser(user);
         if (createdUser != null) {
@@ -51,13 +51,13 @@ public class UserController {
 
     }
 
-    @DeleteMapping("deleteUser/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
         userService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/updateUser/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<User> updateUserForm(@PathVariable("id") Long id, @RequestBody User userForUpdate) {
         User user = userService.findById(id);
         if (user != null) {
