@@ -1,8 +1,6 @@
 package net.proselyte.springbootdemo.model;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -22,4 +20,15 @@ public class Note {
     private Date createTime;
     @Column(name = "last_update_time")
     private Date lastUpdateTime;
+
+    public Note() {
+    }
+
+    public Note(Long id, String title, String note, Date createTime, Date lastUpdateTime) {
+        this.id = id;
+        this.title = title;
+        this.note = note;
+        this.createTime = createTime;
+        this.lastUpdateTime = lastUpdateTime;
+    }
 }

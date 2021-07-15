@@ -1,8 +1,6 @@
 package net.proselyte.springbootdemo.model;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,4 +25,15 @@ public class User {
     private Date createTime;
     @Column(name = "last_update_time")
     private Date lastUpdateTime;
+
+    public User() {
+    }
+
+    public User(Long id, String email, String password, Date createTime, Date lastUpdateTime) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.createTime = createTime;
+        this.lastUpdateTime = lastUpdateTime;
+    }
 }
