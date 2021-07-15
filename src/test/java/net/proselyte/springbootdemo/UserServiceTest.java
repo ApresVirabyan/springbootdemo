@@ -25,10 +25,10 @@ import java.util.Date;
 public class UserServiceTest {
 
     @InjectMocks
-    UserService userService;
+    private UserService userService;
 
     @Mock
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Before
     public void init(){
