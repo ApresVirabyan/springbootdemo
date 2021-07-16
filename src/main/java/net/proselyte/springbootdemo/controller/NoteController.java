@@ -41,8 +41,8 @@ public class NoteController {
         }
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<Note> createUser(@RequestBody Note note) {
+    @PostMapping("/createNote")
+    public ResponseEntity<Note> createNote(@RequestBody Note note) {
         Note createdNote = noteService.saveNote(note);
         if (createdNote != null) {
             return new ResponseEntity<>(createdNote, HttpStatus.CREATED);
@@ -53,9 +53,12 @@ public class NoteController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
-        noteService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<HttpStatus> deleteNote(@PathVariable("id") Long id) {
+        if (noteService.deleteById(id)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
 
     @PutMapping("/update/{id}")

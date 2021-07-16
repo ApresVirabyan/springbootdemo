@@ -1,5 +1,6 @@
 package net.proselyte.springbootdemo;
 
+import net.proselyte.springbootdemo.model.Note;
 import net.proselyte.springbootdemo.model.User;
 import net.proselyte.springbootdemo.repository.UserRepository;
 import net.proselyte.springbootdemo.service.UserService;
@@ -17,7 +18,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Date;
 
@@ -27,7 +30,7 @@ public class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
-    @Mock
+    @Spy
     private UserRepository userRepository;
 
     @Before
@@ -65,5 +68,12 @@ public class UserServiceTest {
         User user = new User(1L,"vahag@mail.ru", "123456", new Date(2021, 07, 14), new Date(2021, 06,13));
         userService.saveUser(user);
         verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    public void deleteNote(){
+        User user = new User(1L,"vahag@mail.ru", "123456", new Date(2021, 07, 14), new Date(2021, 06,13));
+        userService.deleteById(1L);
+        verify(userRepository).deleteById(user.getId());
     }
 }

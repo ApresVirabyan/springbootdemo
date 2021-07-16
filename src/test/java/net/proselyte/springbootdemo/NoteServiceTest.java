@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Date;
@@ -27,7 +28,7 @@ public class NoteServiceTest {
     @InjectMocks
     NoteService noteService;
 
-    @Mock
+    @Spy
     NoteRepository noteRepository;
 
     @Before
@@ -35,6 +36,7 @@ public class NoteServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
+    @Test
     public void getAllNotesTest() {
         List<Note> notes = new ArrayList<>();
         Note firstNote = new Note(3L, "hello", "hello world", new Date(2021, 07, 12), new Date(2021, 06, 11));
@@ -59,9 +61,17 @@ public class NoteServiceTest {
         assertEquals(new Date(2021, 06, 11), note.getLastUpdateTime());
     }
 
+    @Test
     public void createNoteTest(){
         Note note = new Note(3L, "hello", "hello world", new Date(2021, 07, 12), new Date(2021, 06, 11));
         noteService.saveNote(note);
         verify(noteRepository, times(1)).save(note);
+    }
+
+    @Test
+    public void deleteNote(){
+        Note note = new Note(3L, "hello", "hello world", new Date(2021, 07, 12), new Date(2021, 06, 11));
+        noteService.deleteById(3L);
+        verify(noteRepository).deleteById(note.getId());
     }
 }

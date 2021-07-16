@@ -29,7 +29,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void deleteById(Long id){
-        userRepository.deleteById(id);
+    public boolean deleteById(Long id){
+        if(id != null){
+            userRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

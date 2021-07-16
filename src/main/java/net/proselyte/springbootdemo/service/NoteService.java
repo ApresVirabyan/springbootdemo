@@ -15,19 +15,24 @@ public class NoteService {
         this.noteRepository = noteRepository;
     }
 
-    public Note findById(Long id){
+    public Note findById(Long id) {
         return noteRepository.getOne(id);
     }
 
-    public List<Note> findAll(){
+    public List<Note> findAll() {
         return noteRepository.findAll();
     }
 
-    public Note saveNote(Note note){
+    public Note saveNote(Note note) {
         return noteRepository.save(note);
     }
 
-    public void deleteById(Long id){
-        noteRepository.deleteById(id);
+    public boolean deleteById(Long id) {
+        if (id != null) {
+            noteRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
