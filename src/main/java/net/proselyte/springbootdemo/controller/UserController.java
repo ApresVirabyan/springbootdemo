@@ -7,22 +7,34 @@ import org.springframework.web.bind.annotation.*;
 
 import net.proselyte.springbootdemo.model.User;
 import net.proselyte.springbootdemo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Controller for work with user.
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
+    /** User service. */
     private final UserService userService;
 
-    @Autowired
+    /**
+     * Constructor.
+     *
+     * @param userService service.
+     */
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * Method for show all users.
+     *
+     * @return response with all users.
+     */
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> findAll() {
         List<UserDto> users = userService.findAll().stream().map(this::convertToUserDto).collect(Collectors.toList());
@@ -32,6 +44,12 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    /**
+     * Method for show one user.
+     *
+     * @param id user id.
+     * @return response which contains user with passed id.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable("id") long id) {
         User user = userService.findById(id);
@@ -43,6 +61,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Method for creating user.
+     *
+     * @param userDto user DTO.
+     * @return response which contains created user.
+     */
     @PostMapping("/createUser")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         User user = convertToUser(userDto);
@@ -55,6 +79,12 @@ public class UserController {
 
     }
 
+    /**
+     * Delete user.
+     *
+     * @param id deleted user id.
+     * @return Http status.
+     */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
         if (userService.deleteById(id)) {
@@ -64,6 +94,13 @@ public class UserController {
         }
     }
 
+    /**
+     * Update user.
+     *
+     * @param id user id.
+     * @param userForUpdate user with updated data.
+     * @return response with updated user.
+     */
     @PutMapping("/update/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserDto userForUpdate) {
         User user = userService.findById(id);
@@ -78,6 +115,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Convert user to user DTO.
+     *
+     * @param user user.
+     * @return user DTO.
+     */
     private UserDto convertToUserDto(User user){
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
@@ -88,6 +131,12 @@ public class UserController {
         return userDto;
     }
 
+    /**
+     * Convert userDTO to user.
+     *
+     * @param userDto user DTO.
+     * @return user.
+     */
     private User convertToUser(UserDto userDto){
         User user = new User();
         user.setId(userDto.getId());

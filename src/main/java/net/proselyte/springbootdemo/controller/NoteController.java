@@ -4,7 +4,6 @@ package net.proselyte.springbootdemo.controller;
 import net.proselyte.springbootdemo.dto.NoteDto;
 import net.proselyte.springbootdemo.model.Note;
 import net.proselyte.springbootdemo.service.NoteService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,17 +11,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Controller for operations with note.
+ */
 @RestController
 @RequestMapping("/note")
 public class NoteController {
 
+    /** Note service. */
     private final NoteService noteService;
 
-    @Autowired
+    /**
+     * Constructor.
+     *
+     * @param noteService note service.
+     */
     public NoteController(NoteService noteService) {
         this.noteService = noteService;
     }
 
+    /**
+     * Send all notes.
+     *
+     * @return response with list of all notes.
+     */
     @GetMapping("/notes")
     public ResponseEntity<List<NoteDto>> findAllNotes() {
         List<NoteDto> notes = noteService.findAll().stream().map(this::convertToNoteDto).collect(Collectors.toList());
@@ -32,6 +44,12 @@ public class NoteController {
         return new ResponseEntity<>(notes, HttpStatus.OK);
     }
 
+    /**
+     * Send note response.
+     *
+     * @param id notes id.
+     * @return note with passed id.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<NoteDto> getNoteById(@PathVariable("id") long id) {
         Note note = noteService.findById(id);
@@ -42,6 +60,12 @@ public class NoteController {
         }
     }
 
+    /**
+     * Create note.
+     *
+     * @param noteDto note DTO.
+     * @return note.
+     */
     @PostMapping("/createNote")
     public ResponseEntity<NoteDto> createNote(@RequestBody NoteDto noteDto) {
         Note note = convertToNote(noteDto);
@@ -54,6 +78,12 @@ public class NoteController {
 
     }
 
+    /**
+     * Delete note with passed id.
+     *
+     * @param id note id.
+     * @return true if note is deleted otherwise false.
+     */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> deleteNote(@PathVariable("id") Long id) {
         if (noteService.deleteById(id)) {
@@ -63,6 +93,13 @@ public class NoteController {
         }
     }
 
+    /**
+     * Update note.
+     *
+     * @param id note id.
+     * @param noteForUpdate note with info for update.
+     * @return updated note.
+     */
     @PutMapping("/update/{id}")
     public ResponseEntity<NoteDto> updateNote(@PathVariable("id") Long id, @RequestBody NoteDto noteForUpdate) {
         Note note = noteService.findById(id);
@@ -77,6 +114,12 @@ public class NoteController {
         }
     }
 
+    /**
+     * Convert note to noteDTO.
+     *
+     * @param note note.
+     * @return note DTO.
+     */
     private NoteDto convertToNoteDto(Note note){
         NoteDto noteDto = new NoteDto();
         noteDto.setId(note.getId());
@@ -87,13 +130,19 @@ public class NoteController {
         return noteDto;
     }
 
-    private Note convertToNote(NoteDto user){
+    /**
+     * Convert noteDto to note.
+     *
+     * @param noteDto note DTO.
+     * @return note.
+     */
+    private Note convertToNote(NoteDto noteDto){
         Note note = new Note();
-        note.setId(user.getId());
-        note.setTitle(user.getTitle());
-        note.setNote(user.getNote());
-        note.setCreateTime(user.getCreateTime());
-        note.setLastUpdateTime(user.getLastUpdateTime());
+        note.setId(noteDto.getId());
+        note.setTitle(noteDto.getTitle());
+        note.setNote(noteDto.getNote());
+        note.setCreateTime(noteDto.getCreateTime());
+        note.setLastUpdateTime(noteDto.getLastUpdateTime());
         return note;
     }
 }
