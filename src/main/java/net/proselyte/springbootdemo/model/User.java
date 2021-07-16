@@ -30,7 +30,7 @@ public class User {
     private Date lastUpdateTime;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
-    private HashSet<Note> notes = new HashSet();
+    private Set<Note> notes = new HashSet();
 
     public User() {
     }
